@@ -1,0 +1,691 @@
+{
+  "format_version": 1,
+  "model": "PANNs LeeNet11",
+  "checkpoint": "LeeNet11_mAP=0.266.pth",
+  "checkpoint_iteration": 540000,
+  "fixed_point_profile": "v1_calibrated_125x",
+  "data_width_bits": 16,
+  "weight_width_bits": 16,
+  "accumulator_width_bits": 48,
+  "bias_valid_width_bits": 48,
+  "bias_storage_width_bits": 64,
+  "endianness": "little",
+  "activation_frac_bits": {
+    "input": 15,
+    "conv1": 8,
+    "conv2": 9,
+    "conv3": 10,
+    "conv4": 9,
+    "conv5": 10,
+    "conv6": 10,
+    "conv7": 8,
+    "conv8": 8,
+    "conv9": 13,
+    "global": 13,
+    "fc1": 11,
+    "fc2": 10
+  },
+  "activation_layout": {
+    "input": "T",
+    "conv_output": "C,T with T fastest",
+    "fc_output": "C"
+  },
+  "model_blob": {
+    "file": "model_params.bin",
+    "size_bytes": 1509455,
+    "alignment_bytes": 64,
+    "sha256": "14139436a146e3c82b7eb4134856f38181c912a6031908e53b522afd52f3dec3"
+  },
+  "layers": {
+    "conv1": {
+      "layer_info": {
+        "type": "conv1d",
+        "cin": 1,
+        "cout": 64,
+        "kernel": 3,
+        "conv_stride": 3,
+        "conv_padding": 1,
+        "pool_kernel": 0,
+        "pool_stride": 0,
+        "pool_padding": 0,
+        "tin": 320000,
+        "tconv": 106667,
+        "tout": 106667
+      },
+      "activation": {
+        "fin": 15,
+        "fout": 8,
+        "storage": "signed int16"
+      },
+      "weight": {
+        "storage": "signed int16 little-endian",
+        "layout": "OC,IC,K (K fastest)",
+        "shape": [
+          64,
+          1,
+          3
+        ],
+        "frac_bits_min": 9,
+        "frac_bits_max": 13
+      },
+      "bias": {
+        "storage": "signed int64 little-endian container",
+        "valid_width_bits": 48,
+        "scale": "Fin + Fw[output_channel]"
+      },
+      "requant": {
+        "storage": "signed int8",
+        "policy": "right shift per output channel",
+        "rounding": "round-to-nearest, ties-away-from-zero",
+        "saturation": "signed INT16",
+        "shift_min": 16,
+        "shift_max": 20
+      },
+      "blob": {
+        "weight_offset": 0,
+        "weight_size": 384,
+        "bias_offset": 384,
+        "bias_size": 512,
+        "shift_offset": 896,
+        "shift_size": 64
+      },
+      "individual_files": {
+        "weight": "conv1_weight_int16.bin",
+        "bias": "conv1_bias_int64.bin",
+        "weight_fracbits": "conv1_weight_fracbits_int8.bin",
+        "rshift": "conv1_rshift_int8.bin"
+      }
+    },
+    "conv2": {
+      "layer_info": {
+        "type": "conv1d",
+        "cin": 64,
+        "cout": 64,
+        "kernel": 3,
+        "conv_stride": 1,
+        "conv_padding": 1,
+        "pool_kernel": 3,
+        "pool_stride": 3,
+        "pool_padding": 1,
+        "tin": 106667,
+        "tconv": 106667,
+        "tout": 35556
+      },
+      "activation": {
+        "fin": 8,
+        "fout": 9,
+        "storage": "signed int16"
+      },
+      "weight": {
+        "storage": "signed int16 little-endian",
+        "layout": "OC,IC,K (K fastest)",
+        "shape": [
+          64,
+          64,
+          3
+        ],
+        "frac_bits_min": 15,
+        "frac_bits_max": 19
+      },
+      "bias": {
+        "storage": "signed int64 little-endian container",
+        "valid_width_bits": 48,
+        "scale": "Fin + Fw[output_channel]"
+      },
+      "requant": {
+        "storage": "signed int8",
+        "policy": "right shift per output channel",
+        "rounding": "round-to-nearest, ties-away-from-zero",
+        "saturation": "signed INT16",
+        "shift_min": 14,
+        "shift_max": 18
+      },
+      "blob": {
+        "weight_offset": 960,
+        "weight_size": 24576,
+        "bias_offset": 25536,
+        "bias_size": 512,
+        "shift_offset": 26048,
+        "shift_size": 64
+      },
+      "individual_files": {
+        "weight": "conv2_weight_int16.bin",
+        "bias": "conv2_bias_int64.bin",
+        "weight_fracbits": "conv2_weight_fracbits_int8.bin",
+        "rshift": "conv2_rshift_int8.bin"
+      }
+    },
+    "conv3": {
+      "layer_info": {
+        "type": "conv1d",
+        "cin": 64,
+        "cout": 64,
+        "kernel": 3,
+        "conv_stride": 1,
+        "conv_padding": 1,
+        "pool_kernel": 3,
+        "pool_stride": 3,
+        "pool_padding": 1,
+        "tin": 35556,
+        "tconv": 35556,
+        "tout": 11852
+      },
+      "activation": {
+        "fin": 9,
+        "fout": 10,
+        "storage": "signed int16"
+      },
+      "weight": {
+        "storage": "signed int16 little-endian",
+        "layout": "OC,IC,K (K fastest)",
+        "shape": [
+          64,
+          64,
+          3
+        ],
+        "frac_bits_min": 15,
+        "frac_bits_max": 19
+      },
+      "bias": {
+        "storage": "signed int64 little-endian container",
+        "valid_width_bits": 48,
+        "scale": "Fin + Fw[output_channel]"
+      },
+      "requant": {
+        "storage": "signed int8",
+        "policy": "right shift per output channel",
+        "rounding": "round-to-nearest, ties-away-from-zero",
+        "saturation": "signed INT16",
+        "shift_min": 14,
+        "shift_max": 18
+      },
+      "blob": {
+        "weight_offset": 26112,
+        "weight_size": 24576,
+        "bias_offset": 50688,
+        "bias_size": 512,
+        "shift_offset": 51200,
+        "shift_size": 64
+      },
+      "individual_files": {
+        "weight": "conv3_weight_int16.bin",
+        "bias": "conv3_bias_int64.bin",
+        "weight_fracbits": "conv3_weight_fracbits_int8.bin",
+        "rshift": "conv3_rshift_int8.bin"
+      }
+    },
+    "conv4": {
+      "layer_info": {
+        "type": "conv1d",
+        "cin": 64,
+        "cout": 128,
+        "kernel": 3,
+        "conv_stride": 1,
+        "conv_padding": 1,
+        "pool_kernel": 3,
+        "pool_stride": 3,
+        "pool_padding": 1,
+        "tin": 11852,
+        "tconv": 11852,
+        "tout": 3951
+      },
+      "activation": {
+        "fin": 10,
+        "fout": 9,
+        "storage": "signed int16"
+      },
+      "weight": {
+        "storage": "signed int16 little-endian",
+        "layout": "OC,IC,K (K fastest)",
+        "shape": [
+          128,
+          64,
+          3
+        ],
+        "frac_bits_min": 14,
+        "frac_bits_max": 18
+      },
+      "bias": {
+        "storage": "signed int64 little-endian container",
+        "valid_width_bits": 48,
+        "scale": "Fin + Fw[output_channel]"
+      },
+      "requant": {
+        "storage": "signed int8",
+        "policy": "right shift per output channel",
+        "rounding": "round-to-nearest, ties-away-from-zero",
+        "saturation": "signed INT16",
+        "shift_min": 15,
+        "shift_max": 19
+      },
+      "blob": {
+        "weight_offset": 51264,
+        "weight_size": 49152,
+        "bias_offset": 100416,
+        "bias_size": 1024,
+        "shift_offset": 101440,
+        "shift_size": 128
+      },
+      "individual_files": {
+        "weight": "conv4_weight_int16.bin",
+        "bias": "conv4_bias_int64.bin",
+        "weight_fracbits": "conv4_weight_fracbits_int8.bin",
+        "rshift": "conv4_rshift_int8.bin"
+      }
+    },
+    "conv5": {
+      "layer_info": {
+        "type": "conv1d",
+        "cin": 128,
+        "cout": 128,
+        "kernel": 3,
+        "conv_stride": 1,
+        "conv_padding": 1,
+        "pool_kernel": 3,
+        "pool_stride": 3,
+        "pool_padding": 1,
+        "tin": 3951,
+        "tconv": 3951,
+        "tout": 1317
+      },
+      "activation": {
+        "fin": 9,
+        "fout": 10,
+        "storage": "signed int16"
+      },
+      "weight": {
+        "storage": "signed int16 little-endian",
+        "layout": "OC,IC,K (K fastest)",
+        "shape": [
+          128,
+          128,
+          3
+        ],
+        "frac_bits_min": 15,
+        "frac_bits_max": 19
+      },
+      "bias": {
+        "storage": "signed int64 little-endian container",
+        "valid_width_bits": 48,
+        "scale": "Fin + Fw[output_channel]"
+      },
+      "requant": {
+        "storage": "signed int8",
+        "policy": "right shift per output channel",
+        "rounding": "round-to-nearest, ties-away-from-zero",
+        "saturation": "signed INT16",
+        "shift_min": 14,
+        "shift_max": 18
+      },
+      "blob": {
+        "weight_offset": 101568,
+        "weight_size": 98304,
+        "bias_offset": 199872,
+        "bias_size": 1024,
+        "shift_offset": 200896,
+        "shift_size": 128
+      },
+      "individual_files": {
+        "weight": "conv5_weight_int16.bin",
+        "bias": "conv5_bias_int64.bin",
+        "weight_fracbits": "conv5_weight_fracbits_int8.bin",
+        "rshift": "conv5_rshift_int8.bin"
+      }
+    },
+    "conv6": {
+      "layer_info": {
+        "type": "conv1d",
+        "cin": 128,
+        "cout": 128,
+        "kernel": 3,
+        "conv_stride": 1,
+        "conv_padding": 1,
+        "pool_kernel": 3,
+        "pool_stride": 3,
+        "pool_padding": 1,
+        "tin": 1317,
+        "tconv": 1317,
+        "tout": 439
+      },
+      "activation": {
+        "fin": 10,
+        "fout": 10,
+        "storage": "signed int16"
+      },
+      "weight": {
+        "storage": "signed int16 little-endian",
+        "layout": "OC,IC,K (K fastest)",
+        "shape": [
+          128,
+          128,
+          3
+        ],
+        "frac_bits_min": 15,
+        "frac_bits_max": 18
+      },
+      "bias": {
+        "storage": "signed int64 little-endian container",
+        "valid_width_bits": 48,
+        "scale": "Fin + Fw[output_channel]"
+      },
+      "requant": {
+        "storage": "signed int8",
+        "policy": "right shift per output channel",
+        "rounding": "round-to-nearest, ties-away-from-zero",
+        "saturation": "signed INT16",
+        "shift_min": 15,
+        "shift_max": 18
+      },
+      "blob": {
+        "weight_offset": 201024,
+        "weight_size": 98304,
+        "bias_offset": 299328,
+        "bias_size": 1024,
+        "shift_offset": 300352,
+        "shift_size": 128
+      },
+      "individual_files": {
+        "weight": "conv6_weight_int16.bin",
+        "bias": "conv6_bias_int64.bin",
+        "weight_fracbits": "conv6_weight_fracbits_int8.bin",
+        "rshift": "conv6_rshift_int8.bin"
+      }
+    },
+    "conv7": {
+      "layer_info": {
+        "type": "conv1d",
+        "cin": 128,
+        "cout": 128,
+        "kernel": 3,
+        "conv_stride": 1,
+        "conv_padding": 1,
+        "pool_kernel": 3,
+        "pool_stride": 3,
+        "pool_padding": 1,
+        "tin": 439,
+        "tconv": 439,
+        "tout": 147
+      },
+      "activation": {
+        "fin": 10,
+        "fout": 8,
+        "storage": "signed int16"
+      },
+      "weight": {
+        "storage": "signed int16 little-endian",
+        "layout": "OC,IC,K (K fastest)",
+        "shape": [
+          128,
+          128,
+          3
+        ],
+        "frac_bits_min": 13,
+        "frac_bits_max": 18
+      },
+      "bias": {
+        "storage": "signed int64 little-endian container",
+        "valid_width_bits": 48,
+        "scale": "Fin + Fw[output_channel]"
+      },
+      "requant": {
+        "storage": "signed int8",
+        "policy": "right shift per output channel",
+        "rounding": "round-to-nearest, ties-away-from-zero",
+        "saturation": "signed INT16",
+        "shift_min": 15,
+        "shift_max": 20
+      },
+      "blob": {
+        "weight_offset": 300480,
+        "weight_size": 98304,
+        "bias_offset": 398784,
+        "bias_size": 1024,
+        "shift_offset": 399808,
+        "shift_size": 128
+      },
+      "individual_files": {
+        "weight": "conv7_weight_int16.bin",
+        "bias": "conv7_bias_int64.bin",
+        "weight_fracbits": "conv7_weight_fracbits_int8.bin",
+        "rshift": "conv7_rshift_int8.bin"
+      }
+    },
+    "conv8": {
+      "layer_info": {
+        "type": "conv1d",
+        "cin": 128,
+        "cout": 128,
+        "kernel": 3,
+        "conv_stride": 1,
+        "conv_padding": 1,
+        "pool_kernel": 3,
+        "pool_stride": 3,
+        "pool_padding": 1,
+        "tin": 147,
+        "tconv": 147,
+        "tout": 49
+      },
+      "activation": {
+        "fin": 8,
+        "fout": 8,
+        "storage": "signed int16"
+      },
+      "weight": {
+        "storage": "signed int16 little-endian",
+        "layout": "OC,IC,K (K fastest)",
+        "shape": [
+          128,
+          128,
+          3
+        ],
+        "frac_bits_min": 15,
+        "frac_bits_max": 18
+      },
+      "bias": {
+        "storage": "signed int64 little-endian container",
+        "valid_width_bits": 48,
+        "scale": "Fin + Fw[output_channel]"
+      },
+      "requant": {
+        "storage": "signed int8",
+        "policy": "right shift per output channel",
+        "rounding": "round-to-nearest, ties-away-from-zero",
+        "saturation": "signed INT16",
+        "shift_min": 15,
+        "shift_max": 18
+      },
+      "blob": {
+        "weight_offset": 399936,
+        "weight_size": 98304,
+        "bias_offset": 498240,
+        "bias_size": 1024,
+        "shift_offset": 499264,
+        "shift_size": 128
+      },
+      "individual_files": {
+        "weight": "conv8_weight_int16.bin",
+        "bias": "conv8_bias_int64.bin",
+        "weight_fracbits": "conv8_weight_fracbits_int8.bin",
+        "rshift": "conv8_rshift_int8.bin"
+      }
+    },
+    "conv9": {
+      "layer_info": {
+        "type": "conv1d",
+        "cin": 128,
+        "cout": 256,
+        "kernel": 3,
+        "conv_stride": 1,
+        "conv_padding": 1,
+        "pool_kernel": 3,
+        "pool_stride": 3,
+        "pool_padding": 1,
+        "tin": 49,
+        "tconv": 49,
+        "tout": 17
+      },
+      "activation": {
+        "fin": 8,
+        "fout": 13,
+        "storage": "signed int16"
+      },
+      "weight": {
+        "storage": "signed int16 little-endian",
+        "layout": "OC,IC,K (K fastest)",
+        "shape": [
+          256,
+          128,
+          3
+        ],
+        "frac_bits_min": 17,
+        "frac_bits_max": 19
+      },
+      "bias": {
+        "storage": "signed int64 little-endian container",
+        "valid_width_bits": 48,
+        "scale": "Fin + Fw[output_channel]"
+      },
+      "requant": {
+        "storage": "signed int8",
+        "policy": "right shift per output channel",
+        "rounding": "round-to-nearest, ties-away-from-zero",
+        "saturation": "signed INT16",
+        "shift_min": 12,
+        "shift_max": 14
+      },
+      "blob": {
+        "weight_offset": 499392,
+        "weight_size": 196608,
+        "bias_offset": 696000,
+        "bias_size": 2048,
+        "shift_offset": 698048,
+        "shift_size": 256
+      },
+      "individual_files": {
+        "weight": "conv9_weight_int16.bin",
+        "bias": "conv9_bias_int64.bin",
+        "weight_fracbits": "conv9_weight_fracbits_int8.bin",
+        "rshift": "conv9_rshift_int8.bin"
+      }
+    },
+    "fc1": {
+      "layer_info": {
+        "type": "fc",
+        "cin": 256,
+        "cout": 512
+      },
+      "activation": {
+        "fin": 13,
+        "fout": 11,
+        "storage": "signed int16"
+      },
+      "weight": {
+        "storage": "signed int16 little-endian",
+        "layout": "OUT,IN (IN fastest)",
+        "shape": [
+          512,
+          256
+        ],
+        "frac_bits_min": 13,
+        "frac_bits_max": 18
+      },
+      "bias": {
+        "storage": "signed int64 little-endian container",
+        "valid_width_bits": 48,
+        "scale": "Fin + Fw[output_channel]"
+      },
+      "requant": {
+        "storage": "signed int8",
+        "policy": "right shift per output channel",
+        "rounding": "round-to-nearest, ties-away-from-zero",
+        "saturation": "signed INT16",
+        "shift_min": 15,
+        "shift_max": 20
+      },
+      "blob": {
+        "weight_offset": 698304,
+        "weight_size": 262144,
+        "bias_offset": 960448,
+        "bias_size": 4096,
+        "shift_offset": 964544,
+        "shift_size": 512
+      },
+      "individual_files": {
+        "weight": "fc1_weight_int16.bin",
+        "bias": "fc1_bias_int64.bin",
+        "weight_fracbits": "fc1_weight_fracbits_int8.bin",
+        "rshift": "fc1_rshift_int8.bin"
+      }
+    },
+    "fc2": {
+      "layer_info": {
+        "type": "fc",
+        "cin": 512,
+        "cout": 527
+      },
+      "activation": {
+        "fin": 11,
+        "fout": 10,
+        "storage": "signed int16"
+      },
+      "weight": {
+        "storage": "signed int16 little-endian",
+        "layout": "OUT,IN (IN fastest)",
+        "shape": [
+          527,
+          512
+        ],
+        "frac_bits_min": 14,
+        "frac_bits_max": 16
+      },
+      "bias": {
+        "storage": "signed int64 little-endian container",
+        "valid_width_bits": 48,
+        "scale": "Fin + Fw[output_channel]"
+      },
+      "requant": {
+        "storage": "signed int8",
+        "policy": "right shift per output channel",
+        "rounding": "round-to-nearest, ties-away-from-zero",
+        "saturation": "signed INT16",
+        "shift_min": 15,
+        "shift_max": 17
+      },
+      "blob": {
+        "weight_offset": 965056,
+        "weight_size": 539648,
+        "bias_offset": 1504704,
+        "bias_size": 4216,
+        "shift_offset": 1508928,
+        "shift_size": 527
+      },
+      "individual_files": {
+        "weight": "fc2_weight_int16.bin",
+        "bias": "fc2_bias_int64.bin",
+        "weight_fracbits": "fc2_weight_fracbits_int8.bin",
+        "rshift": "fc2_rshift_int8.bin"
+      }
+    }
+  },
+  "global_pool": {
+    "operation": "global_max + global_mean",
+    "input_time": 17,
+    "input_frac_bits": 13,
+    "output_frac_bits": 13,
+    "mean_rounding": "(sum + 8) // 17 for nonnegative Conv9 output"
+  },
+  "ps_postprocess": {
+    "input": "527 signed INT16 logits",
+    "logit_frac_bits": 10,
+    "operations": [
+      "dequantize",
+      "sigmoid",
+      "Top-K",
+      "security event mapping"
+    ]
+  },
+  "golden": {
+    "directory": "golden_demo",
+    "manifest": "golden_demo/golden_manifest.json"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "model": "PANNs LeeNet11",
+  "paths_relative_to": "repository_root",
+  "source_repository": "https://github.com/qiuqiangkong/audioset_tagging_cnn",
+  "python_code_license": "Model/LICENSE",
+  "python_model": "Model/leenet11.py",
+  "python_inference": "Model/inference.py",
+  "checkpoint": {
+    "file": "Model/weights/leenet11.pth",
+    "size_bytes": 3012373,
+    "sha256": "557d356d9b47d68913c5419af8cad046710cbf4bd679f9d69a4db442beb2b571",
+    "original_filename": "LeeNet11_mAP=0.266.pth",
+    "iteration": 540000
+  },
+  "input": {
+    "sample_rate_hz": 32000,
+    "channels": 1,
+    "sample_count": 320000,
+    "pcm_format": "signed 16-bit little-endian",
+    "fp32_scaling": "PCM16 / 32768.0"
+  },
+  "output": {
+    "classes": 527,
+    "python": "FP32 independent sigmoid scores",
+    "npu": "INT16 Q10 logits; PS applies sigmoid and security postprocessing"
+  },
+  "npu_parameter_layout": "Model/npu/model_manifest.json",
+  "npu_layer_config": "Model/npu/layer_config.csv",
+  "npu_payloads": [
+    {
+      "file": "Model/npu/model_params.bin",
+      "size_bytes": 1509455,
+      "sha256": "14139436a146e3c82b7eb4134856f38181c912a6031908e53b522afd52f3dec3",
+      "ddr_address": "0x01000000"
+    },
+    {
+      "file": "Model/npu/fc1_weight_tiles_le16.bin",
+      "size_bytes": 264192,
+      "sha256": "9b3bebeb41cd5d801539f4fc87d485835933f63b178673091ed8b0e4a314ef3d",
+      "ddr_address": "0x04C00000"
+    },
+    {
+      "file": "Model/npu/fc2_weight_tiles_le16.bin",
+      "size_bytes": 541728,
+      "sha256": "c2a2d264ce599bb28b219cc9720de5e2e17a7dc351f6ece512c1a68bbccbf2be",
+      "ddr_address": "0x04D00000"
+    }
+  ]
+}

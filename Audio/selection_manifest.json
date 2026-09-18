@@ -1,0 +1,218 @@
+{
+  "model": "PANNs LeeNet11 FP32",
+  "checkpoint": "Model/weights/leenet11.pth",
+  "checkpoint_iteration": 540000,
+  "selection_rule": "maximum PS security-group sigmoid score among candidates whose AudioSet metadata contains the requested MID",
+  "selections": {
+    "knock": {
+      "event": "knock",
+      "display_name": "노크",
+      "youtube_id": "3tUlhM80ObM",
+      "start_seconds": 0,
+      "end_seconds": 8,
+      "split": "eval",
+      "target_class": 359,
+      "target_label": "Knock",
+      "target_score": 0.622191846370697,
+      "target_rank": 1,
+      "security_group_class": 359,
+      "security_group_label": "Knock",
+      "security_group_score": 0.622191846370697,
+      "security_group_rank": 1,
+      "top5": [
+        {
+          "class_index": 359,
+          "label": "Knock",
+          "score": 0.622191846370697
+        },
+        {
+          "class_index": 137,
+          "label": "Music",
+          "score": 0.28778913617134094
+        },
+        {
+          "class_index": 163,
+          "label": "Drum machine",
+          "score": 0.19751733541488647
+        },
+        {
+          "class_index": 65,
+          "label": "Heart murmur",
+          "score": 0.08196087926626205
+        },
+        {
+          "class_index": 500,
+          "label": "Silence",
+          "score": 0.07243925333023071
+        }
+      ],
+      "final_wav": "Audio/knock.wav",
+      "final_pcm": "Audio/knock.pcm",
+      "wav_sha256": "0894457d0d60fb3e0d899297fb8691bc0ac2de588a066ff248deec65b501e7f7",
+      "pcm_sha256": "31fa1e6b6e9a640c1172e32514a1fa4d3cabd6d79344a231ac321deefc4f2a1d",
+      "pcm_bytes": 640000,
+      "source_url": "https://www.youtube.com/watch?v=3tUlhM80ObM",
+      "ddr_address": "0x05700000"
+    },
+    "glass_break": {
+      "event": "glass_break",
+      "display_name": "유리 파손",
+      "youtube_id": "cVgw01vB-yQ",
+      "start_seconds": 0,
+      "end_seconds": 10,
+      "split": "eval",
+      "target_class": 443,
+      "target_label": "Shatter",
+      "target_score": 0.2796057462692261,
+      "target_rank": 2,
+      "security_group_class": 443,
+      "security_group_label": "Shatter",
+      "security_group_score": 0.2796057462692261,
+      "security_group_rank": 2,
+      "top5": [
+        {
+          "class_index": 0,
+          "label": "Speech",
+          "score": 0.5722494721412659
+        },
+        {
+          "class_index": 443,
+          "label": "Shatter",
+          "score": 0.2796057462692261
+        },
+        {
+          "class_index": 137,
+          "label": "Music",
+          "score": 0.19202472269535065
+        },
+        {
+          "class_index": 470,
+          "label": "Breaking",
+          "score": 0.14861145615577698
+        },
+        {
+          "class_index": 89,
+          "label": "Neigh, whinny",
+          "score": 0.0717935562133789
+        }
+      ],
+      "final_wav": "Audio/glass_break.wav",
+      "final_pcm": "Audio/glass_break.pcm",
+      "wav_sha256": "14b0d6d13e5b50de2915cbdb3d801c0eeda8eeb69e737b5765861f506be31dff",
+      "pcm_sha256": "6bbbaaf10a8ede135331971ef948f623f392c3fc12aa5576070d72bc893cd719",
+      "pcm_bytes": 640000,
+      "source_url": "https://www.youtube.com/watch?v=cVgw01vB-yQ",
+      "ddr_address": "0x05800000"
+    },
+    "gunshot": {
+      "event": "gunshot",
+      "display_name": "총성",
+      "youtube_id": "5gJ_PWgJWIw",
+      "start_seconds": 420,
+      "end_seconds": 430,
+      "split": "eval",
+      "target_class": 427,
+      "target_label": "Gunshot, gunfire",
+      "target_score": 0.3705504834651947,
+      "target_rank": 3,
+      "security_group_class": 428,
+      "security_group_label": "Machine gun",
+      "security_group_score": 0.4960451126098633,
+      "security_group_rank": 1,
+      "top5": [
+        {
+          "class_index": 428,
+          "label": "Machine gun",
+          "score": 0.4960451126098633
+        },
+        {
+          "class_index": 137,
+          "label": "Music",
+          "score": 0.41201531887054443
+        },
+        {
+          "class_index": 427,
+          "label": "Gunshot, gunfire",
+          "score": 0.3705504834651947
+        },
+        {
+          "class_index": 429,
+          "label": "Fusillade",
+          "score": 0.3464118540287018
+        },
+        {
+          "class_index": 0,
+          "label": "Speech",
+          "score": 0.23494958877563477
+        }
+      ],
+      "final_wav": "Audio/gunshot.wav",
+      "final_pcm": "Audio/gunshot.pcm",
+      "wav_sha256": "8259af9cc3ace83f1745226c7a99f0832e591780112c0527f9babac852dcbe7f",
+      "pcm_sha256": "c3e024d21003134f61f91b64601e0377a119a99605056adbdd58edea8b23dac9",
+      "pcm_bytes": 640000,
+      "source_url": "https://www.youtube.com/watch?v=5gJ_PWgJWIw",
+      "ddr_address": "0x05900000"
+    },
+    "fire_alarm": {
+      "event": "fire_alarm",
+      "display_name": "화재경보",
+      "youtube_id": "CkHKkAQdQGs",
+      "start_seconds": 40,
+      "end_seconds": 50,
+      "split": "eval",
+      "target_class": 400,
+      "target_label": "Fire alarm",
+      "target_score": 0.44363832473754883,
+      "target_rank": 1,
+      "security_group_class": 400,
+      "security_group_label": "Fire alarm",
+      "security_group_score": 0.44363832473754883,
+      "security_group_rank": 1,
+      "top5": [
+        {
+          "class_index": 400,
+          "label": "Fire alarm",
+          "score": 0.44363832473754883
+        },
+        {
+          "class_index": 388,
+          "label": "Alarm",
+          "score": 0.33513930439949036
+        },
+        {
+          "class_index": 399,
+          "label": "Smoke detector, smoke alarm",
+          "score": 0.20749205350875854
+        },
+        {
+          "class_index": 137,
+          "label": "Music",
+          "score": 0.17326019704341888
+        },
+        {
+          "class_index": 398,
+          "label": "Buzzer",
+          "score": 0.1532752811908722
+        }
+      ],
+      "final_wav": "Audio/fire_alarm.wav",
+      "final_pcm": "Audio/fire_alarm.pcm",
+      "wav_sha256": "da5270363fb551ea3561ef40076519e637bea740388cbde32965423af6026d83",
+      "pcm_sha256": "e0f45cc3ed15dbe9e86dcfa0ddad2a163189fd96a5ca1a024f69030f5222f311",
+      "pcm_bytes": 640000,
+      "source_url": "https://www.youtube.com/watch?v=CkHKkAQdQGs",
+      "ddr_address": "0x05A00000"
+    }
+  },
+  "paths_relative_to": "repository_root",
+  "checkpoint_sha256": "557d356d9b47d68913c5419af8cad046710cbf4bd679f9d69a4db442beb2b571",
+  "audio_format": {
+    "sample_rate_hz": 32000,
+    "channels": 1,
+    "sample_width_bytes": 2,
+    "samples": 320000,
+    "duration_seconds": 10,
+    "pcm_endianness": "little"
+  }
+}
