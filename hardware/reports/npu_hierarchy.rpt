@@ -1,6 +1,0 @@
-PROJECT=asm_mic_demo_npu_project_v6_75mhz
-NPU_VLNV=xilinx.com:user:neural_processing_unit_unified:6.0
-FCLK0_MHZ=75
-AUDIO_CLK_INPUT_MHZ=76.923080
-ADDRESS=0x43C00000
-RANGE=0x00010000

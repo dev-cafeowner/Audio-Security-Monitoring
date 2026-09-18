@@ -1,160 +1,40 @@
-# FPGA NPU for Real-Time Acoustic Security Monitoring
+# NPU 기반 환경음 분석 및 보안 모니터링 시스템
 
-Zybo Z7-20(Zynq-7020)에 **LeeNet11 INT16 추론기를 직접 RTL로 구현**한 FPGA NPU 프로젝트입니다.
-PL에서 12개 레이어를 수행하고 527개 AudioSet logits를 PS로 전달한 뒤, 보안 이벤트로 후처리하여 PC UI에 표시합니다.
+## 프로젝트 개요
 
-## 핵심 결과
+Zybo Z7-20의 Zynq-7020에서 마이크 또는 데모 오디오를 입력받아 환경음을 분석하는 시스템입니다. FPGA의 프로그래머블 로직(PL)에 구현한 NPU가 LeeNet11 모델의 12개 계층을 연산하고, 프로세싱 시스템(PS)이 527개 AudioSet 클래스의 결과를 보안 이벤트 정보로 정리해 UART로 PC에 전달합니다. 데모 오디오는 보드의 오디오 출력으로도 재생할 수 있습니다. 이 저장소에는 실보드에서 검증한 v7의 Vivado·Vitis 소스만 담았습니다.
 
-| 항목 | v6 결과 |
-|---|---:|
-| NPU 구조 | Custom RTL, Shared Conv/FC Compute |
-| Peak compute | **192 MAC/cycle** (`16 OC × 3 Tap × 4 Cin`) |
-| DSP | 192 |
-| LUT / FF | 43,157 / 58,781 |
-| Timing | WNS **+0.497 ns**, WHS **+0.008 ns** |
-| Golden verification | **12 / 12 layers PASS** |
-| Final output | **527 / 527 logits exact match** |
-| Conv2 active cycles vs v3 | **6.095× reduction** |
-| 12-layer operation time vs v3 | **3.908× improvement** |
+## 개발 배경
 
-## 시스템 구조
+무인시설에서는 사람의 상시 관찰 없이 노크, 유리 파손, 총성, 화재경보와 같은 소리를 확인할 필요가 있습니다. 영상만으로는 포착하기 어려운 음향 상황을 분석하고, 오디오 입력부터 신경망 추론과 결과 전달까지 하나의 임베디드 시스템에서 처리하고자 했습니다.
 
-```text
-MIC / DDR Demo Audio
-        │
-        ▼
-   Zynq PS / DDR
-        │ AXI DMA
-        ▼
-┌────────────────────────────────────────┐
-│               Custom NPU               │
-│                                        │
-│  Control → Frontend → Shared Compute   │
-│                         │              │
-│                    192-MAC Array       │
-│                         │              │
-│                    Post-process        │
-│                    ├─ Global Pool      │
-│                    └─ FC               │
-└────────────────────────────────────────┘
-        │
-        ▼
-527 × INT16 Q10 logits
-        │
-        ▼
-PS Post-processing → Security Event → UART → PC UI
-```
+## 개발 목표
 
-## 처음 볼 때는 여기부터
+- 마이크 입력과 사전 준비된 데모 오디오를 동일한 NPU 추론 경로에서 처리합니다.
+- 합성곱·전결합 계층이 계산 자원을 공유하는 INT16 NPU를 FPGA에 구현합니다.
+- 감지 결과를 PS에서 보안 이벤트로 분류해 PC 모니터링 화면으로 전달합니다.
+- 데모 입력을 보드에서 재생해 입력 음향과 추론 결과를 함께 확인할 수 있게 합니다.
 
-| 보고 싶은 내용 | 바로가기 |
+## 프로젝트 구성
+
+| 영역 | 구성 |
 |---|---|
-| **NPU 전체 구조** | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) |
-| **RTL 전체 지도** | [`hardware/npu/rtl/README.md`](hardware/npu/rtl/README.md) |
-| NPU Top | [`neural_processing_unit_unified_6_0.v`](hardware/npu/rtl/top/neural_processing_unit_unified_6_0.v) |
-| Conv2~9 Pin4 입력 공급 | [`npu_convn_frontend.v`](hardware/npu/rtl/frontend/npu_convn_frontend.v) |
-| Shared MAC | [`shared_mac_acc_core.v`](hardware/npu/rtl/compute/shared_mac_acc_core.v) |
-| **192-MAC datapath** | [`mac_array_16x3.v`](hardware/npu/rtl/compute/mac_array_16x3.v) |
-| Conv 후처리 | [`conv_postprocess_16.v`](hardware/npu/rtl/postprocess/conv_postprocess_16.v) |
-| PS 추론 흐름 | [`npu_inference.c`](software/ps/npu_inference.c) |
-| NPU Driver | [`npu_unified_driver.c`](software/ps/npu_unified_driver.c) |
-| PC Monitoring UI | [`software/pc_ui`](software/pc_ui) |
-| Golden 검증 결과 | [`docs/VALIDATION.md`](docs/VALIDATION.md) |
-| v3 → v6 최적화 | [`docs/OPTIMIZATION_V3_TO_V6.md`](docs/OPTIMIZATION_V3_TO_V6.md) |
+| Vivado SoC | Zynq PS, 오디오 입력·출력, AXI DMA, NPU를 연결한 블록 설계와 입출력 제약 |
+| Vivado NPU IP | 입력 공급, 192-MAC 공유 계산부, 누산·활성화·풀링 및 출력 제어 RTL과 IP 메타데이터 |
+| Vitis 애플리케이션 | 코덱 설정, 마이크 수집, 데모 재생, 계층별 NPU 실행, 결과 후처리 및 UART 통신을 담당하는 C 소스 |
 
-## Repository Layout
+저장소는 `Vivado/`와 `Vitis/`의 소스 파일로 구성됩니다. 비트스트림, XSA, ELF, 모델 가중치와 데모 오디오 데이터는 포함하지 않습니다.
 
-```text
-.
-├── hardware/
-│   ├── npu/                  # Custom NPU IP
-│   │   └── rtl/
-│   │       ├── top/          # NPU top
-│   │       ├── control/      # CSR / layer control / descriptor
-│   │       ├── frontend/     # Conv1 / ConvN / Global / FC input scheduling
-│   │       ├── compute/      # Shared MAC / 192-MAC array / mode controllers
-│   │       ├── postprocess/  # Requant / ReLU / MaxPool / Global / FC output
-│   │       ├── memory/       # Operand / result / FC tile storage
-│   │       └── common/       # Shared definitions
-│   ├── soc/                  # Minimal Vivado SoC sources + rebuild.tcl
-│   ├── baseline/             # Exact verified v6 XSA
-│   └── reports/              # Timing / utilization / hierarchy
-│
-├── software/
-│   ├── ps/                   # Zynq bare-metal application
-│   └── pc_ui/                # PySide6 monitoring UI
-│
-├── model/                    # LeeNet11 HW mapping metadata
-├── validation/               # Golden/demo validation scripts + evidence
-└── docs/                     # Architecture / optimization / validation
-```
+## 프로젝트 결과
 
-## RTL 구조
+| 항목 | 실보드 검증 결과 |
+|---|---:|
+| NPU 계산 자원 | 192 MAC/cycle, DSP48E1 192개 |
+| 실제 PL 클록 | 76.923 MHz |
+| 전체 계층 Golden 비교 | 12/12 계층 일치 |
+| 최종 출력 비교 | 527/527 logits 일치 |
+| Conv2 연산 | 6,826,911 cycles / 6,826,688 steps |
+| 12계층 연산 시간 합계 | 213.092 ms |
+| SoC 배치·배선 타이밍 | WNS +0.260 ns, WHS +0.018 ns |
 
-```text
-NPU Top
-  │
-  ├─ Control
-  │   ├─ AXI-Lite CSR
-  │   ├─ Layer Controller
-  │   └─ Descriptor / Conv Parameters
-  │
-  ├─ Frontend
-  │   ├─ Conv1
-  │   ├─ Conv2~Conv9 Pin4
-  │   ├─ Global
-  │   └─ FC
-  │
-  └─ Shared Compute
-      ├─ Conv / FC Control
-      ├─ Shared MAC + Accumulator
-      │   └─ 16 OC × 3 Tap × 4 Cin = 192 MAC/cycle
-      └─ Post-process
-          ├─ Requantization
-          ├─ ReLU / MaxPool
-          ├─ Global Pool
-          └─ FC Post-process
-```
-
-## Vivado 재구성
-
-생성된 `.xpr`, `.cache`, `.gen`, `.runs`, `.hw` 디렉터리는 저장소에 포함하지 않습니다.
-최소 SoC 원본만 `hardware/soc/`에 유지합니다.
-
-```text
-hardware/soc/
-├── design_SoC.bd
-├── design_SoC_wrapper.v
-├── constraints/audio_io.xdc
-└── rebuild.tcl
-```
-
-Vivado 2024.2 Tcl Console에서:
-
-```tcl
-source hardware/soc/rebuild.tcl
-```
-
-재생성된 프로젝트는 `build/vivado/` 아래에 생성됩니다.
-
-## 검증 기준본
-
-`hardware/baseline/verified_v6.xsa`는 v6 실보드 검증에 사용한 정확한 hardware handoff입니다.
-
-```text
-SHA-256
-992fc64e1515aa17b24d4d6b59b26bb6e9fb870a714d3da3382de0919b226ea9
-```
-
-Golden 검증에서는 다음 전체 경로가 bit-exact를 통과했습니다.
-
-```text
-Conv1 → Conv2 → ... → Conv9 → Global → FC1 → FC2
-12 / 12 layers : mismatch 0
-Final FC2      : 527 / 527 logits exact match
-```
-
-## Binary / Dataset Policy
-
-모델 binary, Golden tensor binary, demo WAV/PCM, bitstream, ELF는 source repository에서 제외했습니다.
-소스 구조와 검증 근거를 중심으로 공개하며, 외부 자산 관련 내용은 [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md)를 참고하세요.
+데모 입력을 사용한 통합 시험에서도 NPU 실행 완료와 UART 결과 출력, 보드 오디오 재생을 확인했습니다. 위 연산 시간은 모델의 10초 입력 수집 시간과 PC 표시 시간을 제외한 값입니다.
